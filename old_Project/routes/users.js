@@ -10,4 +10,9 @@ router.get('/', (req,res) => {
     return res.send(JSON.parse(users));
 });
 
+router.post('/' , (req, res) => {
+    console.log(req)
+    return res.send("ok");
+});
+
 module.exports = router;
