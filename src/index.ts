@@ -6,8 +6,24 @@ import compression from "compression";
 import cors from "cors";
 import mongoose from "mongoose";
 import router from "./router";
+const swaggerJsDoc = require("swagger-jsdoc");
+const swaggerUi = require("swagger-ui-express");
 
 const app = express();
+
+const swaggerOptions = {
+    swaggerDefinition:{
+        info: {
+            title:"Test APi",
+            version: "1.0.0"
+        }
+    },
+    apis: ['/router/index.ts']
+};
+
+const swaggerDocs = swaggerJsDoc(swaggerOptions);
+
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs))
 
 app.use(cors({
     credentials: true,
@@ -30,6 +46,7 @@ const MONGO_URL = 'mongodb+srv://vnoisy:SvSrABkJ42Jafy2K@cluster0.wezvwzk.mongod
 mongoose.Promise = Promise;
 mongoose.connect(MONGO_URL);
 mongoose.connection.on('error',(error: Error) => console.log(error));
+
 
 app.use('/', router());
 
